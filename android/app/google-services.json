@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "554563269282",
+    "project_id": "cycling-route-planner-e0c20",
+    "storage_bucket": "cycling-route-planner-e0c20.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:554563269282:android:55a5478a37abb3e2659dfb",
+        "android_client_info": {
+          "package_name": "com.example.cycling_route_planner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "554563269282-n82d3iaqs7n4j2tksfp41p85ah7ij08d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCD0CMQDjQ17nBto_ccR2zQv6NgJzzJ22M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "554563269282-n82d3iaqs7n4j2tksfp41p85ah7ij08d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
