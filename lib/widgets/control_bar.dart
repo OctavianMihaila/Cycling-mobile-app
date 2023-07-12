@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../utils/time_counter_provider.dart';
+import '../services/time_counter_provider.dart';
 import 'icon_button.dart';
 
 class ControlBar extends StatefulWidget {
@@ -25,14 +25,11 @@ class _ControlBarState extends State<ControlBar> {
       isRecording = true;
     });
     if (widget.onRecordPressed != null) {
-      widget.onRecordPressed!(); // Call the callback function
+      widget.onRecordPressed!(); // Calling the callback function.
     }
   }
 
   void _stopRecording() {
-    // Provider.of<TimeCounterProvider>(context, listen: false).pause();
-    // context.watch<TimeCounterProvider>().dispose();
-
     setState(() {
       isRecording = false;
     });
@@ -61,7 +58,7 @@ class _ControlBarState extends State<ControlBar> {
         color: Colors.orange[600],
         child: Row(
           children: [
-            SizedBox(width: 30),
+            const SizedBox(width: 30),
             Expanded(
               child: CustomIconButton(
                 icon: Icons.pause,
@@ -78,7 +75,7 @@ class _ControlBarState extends State<ControlBar> {
                 onPressed: _stopRecording,
               ),
             ),
-            SizedBox(width: 30),
+            const SizedBox(width: 30),
           ],
         ),
       );
@@ -89,7 +86,7 @@ class _ControlBarState extends State<ControlBar> {
         color: Colors.orange[600],
         child: Row(
           children: [
-            SizedBox(width: 30),
+            const SizedBox(width: 30),
             Expanded(
               child: CustomIconButton(
                 icon: Icons.explore,
@@ -115,7 +112,7 @@ class _ControlBarState extends State<ControlBar> {
                 },
               ),
             ),
-            SizedBox(width: 30),
+            const SizedBox(width: 30),
           ],
         ),
       );

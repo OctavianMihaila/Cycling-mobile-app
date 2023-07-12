@@ -12,23 +12,23 @@ class InfoField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             fieldName,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.blue,
               fontSize: 18,
               fontWeight: FontWeight.bold,
               decoration: TextDecoration.none,
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
             fieldValue,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.orange,
               fontSize: 24,
               fontWeight: FontWeight.bold,

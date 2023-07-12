@@ -1,15 +1,9 @@
-import 'package:cycling_route_planner/screens/auth/auth.dart';
 import 'package:cycling_route_planner/widgets/google_maps.dart';
 import 'package:cycling_route_planner/widgets/popup_menu.dart';
-import 'package:cycling_route_planner/widgets/splash_button.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart';
 
-import '../../utils/time_counter_provider.dart';
 import '../../widgets/control_bar.dart';
-import '../../widgets/icon_button.dart';
 import '../../widgets/ride_details_popup_box.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -20,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   User? user = FirebaseAuth.instance.currentUser;
   List<OverlayEntry> overlayEntries = [];
-  // Used to store the overlay entries with their corresponding widget id
+  // Used to store the overlay entries with their corresponding widget id.
   Map<String, OverlayEntry> popUpWidgets = {};
   bool isDetailsVisible = false;
   bool isWeatherVisible = false;
@@ -28,17 +22,18 @@ class _HomeScreenState extends State<HomeScreen> {
   void _showPopUpWidget(String widgetId, WidgetBuilder builder) {
     OverlayState? overlayState = Overlay.of(context);
     OverlayEntry overlayEntry = OverlayEntry(builder: builder);
-    overlayState?.insert(overlayEntry);
+    overlayState.insert(overlayEntry);
     overlayEntries.add(overlayEntry);
-    popUpWidgets[widgetId] = overlayEntry; // Store the overlay entry with its corresponding widget id
+    // Store the overlay entry with its corresponding widget id.
+    popUpWidgets[widgetId] = overlayEntry;
   }
 
   void _hidePopUpWidget(String widgetId) {
     OverlayEntry? overlayEntry = popUpWidgets[widgetId];
     if (overlayEntry != null) {
-      overlayEntry.remove(); // Remove the overlay entry
+      overlayEntry.remove();
       overlayEntries.remove(overlayEntry);
-      popUpWidgets.remove(widgetId); // Remove it from the map
+      popUpWidgets.remove(widgetId);
     }
   }
 
@@ -77,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _showCloseRecordDetailsButton(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
-    final double buttonSize = 50.0;
+    const double buttonSize = 50.0;
 
     _showPopUpWidget('close_record_button', (BuildContext context) {
       return Positioned(
@@ -95,12 +90,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 _showRecordDetails(context);
               }
             },
-            child: Icon(Icons.area_chart),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red[400],
-              shape: CircleBorder(),
-              padding: EdgeInsets.all(5.0),
+              shape: const CircleBorder(),
+              padding: const EdgeInsets.all(5.0),
             ),
+            child: const Icon(Icons.area_chart),
           ),
         ),
       );
@@ -110,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _showCloseWeatherDetailsButton(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
-    final double buttonSize = 50.0;
+    const double buttonSize = 50.0;
 
     _showPopUpWidget('close_weather_button', (BuildContext context) {
       return Positioned(
@@ -128,12 +123,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 _showWeatherDetails(context);
               }
             },
-            child: Icon(Icons.cloud),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red[400],
-              shape: CircleBorder(),
-              padding: EdgeInsets.all(5.0),
+              shape: const CircleBorder(),
+              padding: const EdgeInsets.all(5.0),
             ),
+            child: const Icon(Icons.cloud),
           ),
         ),
       );
@@ -153,14 +148,14 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       drawer: MenuDrawer(),
       appBar: AppBar(
-        title: Text('Cycling peloton'),
+        title: const Text('Cycling peloton'),
         backgroundColor: Colors.orange[600],
       ),
       body: Material(
         child: Column(
           children: [
             Expanded(
-              child: Container(
+              child: SizedBox(
                 height: MediaQuery.of(context).size.height * 0.8,
                 width: MediaQuery.of(context).size.width,
                 child: MapFromGoogle(),

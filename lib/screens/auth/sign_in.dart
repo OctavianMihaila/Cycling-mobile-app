@@ -1,16 +1,15 @@
 import 'package:cycling_route_planner/widgets/google_sign_in_button.dart';
 import 'package:cycling_route_planner/widgets/popup_register_form.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import '../../services/auth.dart';
 import '../../widgets/credential_text_box.dart';
 import '../../widgets/password_text_box.dart';
 import '../../widgets/splash_button.dart';
-import '../home/home.dart';
 import '../home_wrapper.dart';
 
 class SignIn extends StatefulWidget {
+  const SignIn({super.key});
+
   @override
   _SignInState createState() => _SignInState();
 }
@@ -67,7 +66,7 @@ class _SignInState extends State<SignIn> {
             ),
             SplashButton(
               text: 'Sign in',
-              buttonColor: Colors.green!,
+              buttonColor: Colors.green,
               onPressed: () async {
                 String email = emailController.text.trim();
                 String password = passwordController.text.trim();

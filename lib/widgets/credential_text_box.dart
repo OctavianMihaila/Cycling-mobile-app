@@ -5,7 +5,7 @@ class CredentialTextBox extends StatelessWidget {
   final IconData iconData;
   final TextEditingController controller;
 
-  const CredentialTextBox({
+  const CredentialTextBox({super.key,
     required this.text,
     required this.iconData,
     required this.controller,
@@ -37,10 +37,10 @@ class CredentialTextBox extends StatelessWidget {
             ),
             Expanded(
               child: TextField(
-                controller: controller, // Assign the provided controller
+                controller: controller, // Assigned the provided controller.
                 decoration: InputDecoration.collapsed(
                   hintText: text,
-                  hintStyle: TextStyle(color: Colors.grey),
+                  hintStyle: const TextStyle(color: Colors.grey),
                 ),
               ),
             ),

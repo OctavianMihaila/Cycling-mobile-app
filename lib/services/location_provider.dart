@@ -1,24 +1,12 @@
+import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
-class Location {
+class LocationProvider with ChangeNotifier {
   double _latitude = 0;
   double _longitude = 0;
 
-  double getLatitude() {
-    return _latitude;
-  }
-
-  double getLongitude() {
-    return _longitude;
-  }
-
-  static final Location _instance = Location._internal();
-
-  factory Location() {
-    return _instance;
-  }
-
-  Location._internal();
+  double get latitude => _latitude;
+  double get longitude => _longitude;
 
   Future<bool> checkLocationPermission() async {
     LocationPermission locationPermission = await Geolocator.checkPermission();
@@ -41,13 +29,17 @@ class Location {
 
   Future<void> fetchLocation() async {
     try {
-      Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
+      Position? position = await Geolocator.getLastKnownPosition();
+      // if position is null, it will assign the result
+      // of asynchronous function to the variable.
+      position ??= await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high,
+        );
       _latitude = position.latitude;
       _longitude = position.longitude;
     } catch (e) {
       print('Could not fetch location: $e');
     }
+    notifyListeners();
   }
 }

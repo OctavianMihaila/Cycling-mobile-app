@@ -5,7 +5,7 @@ class CustomIconButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
 
-  const CustomIconButton({
+  const CustomIconButton({super.key,
     required this.icon,
     required this.text,
     required this.onPressed,
@@ -24,7 +24,7 @@ class CustomIconButton extends StatelessWidget {
           ),
           Text(
             text,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 10,
               fontWeight: FontWeight.bold,

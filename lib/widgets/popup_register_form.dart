@@ -1,10 +1,7 @@
-import 'dart:ffi';
-
 import 'package:cycling_route_planner/widgets/password_text_box.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cycling_route_planner/widgets/splash_button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:cycling_route_planner/services/register.dart';
 
 import '../screens/home/home.dart';
@@ -54,7 +51,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
     if (result == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Registration failed. Please try again.')),
+        const SnackBar(content: Text('Registration failed. Please try again.')),
       );
 
       // Dispose of the text controllers in order to prevent memory leaks.

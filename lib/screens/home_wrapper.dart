@@ -4,18 +4,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomeWrapper extends StatelessWidget {
-  User? user = FirebaseAuth.instance.currentUser;
+  final User? user = FirebaseAuth.instance.currentUser;
+
+  HomeWrapper({super.key});
 
   @override
   Widget build(BuildContext context) {
     if (user != null) {
-      return Container(
-        child: HomeScreen(),
-      );
+      return HomeScreen();
     } else {
-      return Container(
-        child: AuthScreen(),
-      );
+      return AuthScreen();
     }
   }
 }

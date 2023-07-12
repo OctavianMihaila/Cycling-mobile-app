@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../utils/time_counter_provider.dart';
+import '../services/time_counter_provider.dart';
 import 'info_field.dart';
 
 class RideDetailsPopUpBox extends StatelessWidget {
@@ -28,7 +28,7 @@ class RideDetailsPopUpBox extends StatelessWidget {
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.1),
-                      offset: Offset(0, 2),
+                      offset: const Offset(0, 2),
                       blurRadius: 6.0,
                     ),
                   ],
@@ -44,7 +44,7 @@ class RideDetailsPopUpBox extends StatelessWidget {
                               fieldValue: context.watch<TimeCounterProvider>().getCurrentTime(),
                             ),
                           ),
-                          Expanded(
+                          const Expanded(
                             child: InfoField(
                               fieldName: 'Speed',
                               fieldValue: '0.0 km/h',
@@ -53,7 +53,7 @@ class RideDetailsPopUpBox extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Expanded(
+                    const Expanded(
                       child: Row(
                         children: [
                           Expanded(
