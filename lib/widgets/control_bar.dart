@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../utils/time_counter_provider.dart';
 import 'icon_button.dart';
 
 class ControlBar extends StatefulWidget {
@@ -13,9 +15,12 @@ class ControlBar extends StatefulWidget {
 }
 
 class _ControlBarState extends State<ControlBar> {
-  bool isRecording = false;
+  bool isRecording = false; // Used to determine which control bar to show.
+  bool isPaused = false; // If the recording is paused isRecording is still true.
 
   void _startRecording() {
+    Provider.of<TimeCounterProvider>(context, listen: false).reset();
+
     setState(() {
       isRecording = true;
     });
@@ -25,6 +30,9 @@ class _ControlBarState extends State<ControlBar> {
   }
 
   void _stopRecording() {
+    // Provider.of<TimeCounterProvider>(context, listen: false).pause();
+    // context.watch<TimeCounterProvider>().dispose();
+
     setState(() {
       isRecording = false;
     });
@@ -34,6 +42,15 @@ class _ControlBarState extends State<ControlBar> {
     }
   }
 
+  void _handlePause(BuildContext context) {
+    if (isPaused) {
+      Provider.of<TimeCounterProvider>(context, listen: false).resume();
+      isPaused = false;
+    } else {
+      Provider.of<TimeCounterProvider>(context, listen: false).pause();
+      isPaused = true;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +67,7 @@ class _ControlBarState extends State<ControlBar> {
                 icon: Icons.pause,
                 text: 'Pause',
                 onPressed: () {
-                  // TODO: Handle pause logic
+                  _handlePause(context);
                 },
               ),
             ),
@@ -104,4 +121,6 @@ class _ControlBarState extends State<ControlBar> {
       );
     }
   }
+
 }
+

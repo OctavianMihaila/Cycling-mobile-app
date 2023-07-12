@@ -21,4 +21,4 @@ class RideInfo extends StatelessWidget {
       ),
       child: // TODO
     );
-  }
+  };

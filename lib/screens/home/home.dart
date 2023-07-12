@@ -5,10 +5,12 @@ import 'package:cycling_route_planner/widgets/splash_button.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 
+import '../../utils/time_counter_provider.dart';
 import '../../widgets/control_bar.dart';
 import '../../widgets/icon_button.dart';
-import '../../widgets/popup_box.dart';
+import '../../widgets/ride_details_popup_box.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -49,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
         top: height * 0.7,
         left: width * 0.1,
         right: width * 0.1,
-        child: RecordDetailsPopUpBox(width: width, height: height),
+        child: RideDetailsPopUpBox(width: width, height: height),
       );
     });
 
@@ -65,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
         top: height * 0.45,
         left: width * 0.1,
         right: width * 0.1,
-        child: RecordDetailsPopUpBox(width: width, height: height),
+        child: RideDetailsPopUpBox(width: width, height: height),
       );
     });
 
