@@ -20,24 +20,41 @@ class MapFromGoogle extends StatelessWidget {
         } else {
           if (snapshot.data == true) {
             // Fetching the location if not already fetched
-            if (locationProvider.latitude == 0 && locationProvider.longitude == 0) {
+            if (locationProvider.latitude == 0 &&
+                locationProvider.longitude == 0) {
               locationProvider.fetchLocation();
             }
+
             // Consumer widget improves performance here by only
             // rebuilding the widget wrapped in it.
             return Consumer<LocationProvider>(
               builder: (context, locationProvider, _) {
                 final double latitude = locationProvider.latitude;
                 final double longitude = locationProvider.longitude;
+
+                final CameraPosition initialCameraPosition = CameraPosition(
+                  target: LatLng(latitude, longitude),
+                  zoom: 18,
+                );
+
+                final GoogleMapController? controller =
+                    locationProvider.controller;
+
+                if (locationProvider.cameraMode == CameraMode.Follow) {
+                  controller?.animateCamera(
+                    CameraUpdate.newCameraPosition(initialCameraPosition),
+                  );
+                }
+
                 return GoogleMap(
-                  initialCameraPosition: CameraPosition(
-                    target: LatLng(latitude, longitude),
-                    zoom: 14,
-                  ),
+                  initialCameraPosition: initialCameraPosition,
+                  myLocationEnabled: true,
+                  polylines: locationProvider.polylines, // Use polylines from LocationProvider
                   onMapCreated: (controller) {
-                    // Perform any controller-related operations here
-                    // Example: set map options, add markers, etc.
+                    locationProvider.controller = controller;
+                    locationProvider.startListeningForLocationChanges();
                   },
+                  onCameraMove: (position) {},
                 );
               },
             );
@@ -49,3 +66,4 @@ class MapFromGoogle extends StatelessWidget {
     );
   }
 }
+
