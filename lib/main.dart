@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:cycling_route_planner/services/location_provider.dart';
+import 'package:cycling_route_planner/services/speed_provider.dart';
 import 'package:cycling_route_planner/services/time_counter_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -41,6 +42,9 @@ void main() async {
         ChangeNotifierProvider<LocationProvider>(
           create: (_) => LocationProvider(),
         ),
+        ChangeNotifierProvider<SpeedProvider>(
+          create: (_) => SpeedProvider(),
+        )
       ],
       child: const MyApp(),
     ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../services/location_provider.dart';
 import '../services/time_counter_provider.dart';
 import 'icon_button.dart';
 
@@ -8,7 +9,7 @@ class ControlBar extends StatefulWidget {
   final VoidCallback? onRecordPressed;
   final VoidCallback? onStopPressed;
 
-  ControlBar({this.onRecordPressed, this.onStopPressed});
+  const ControlBar({super.key, this.onRecordPressed, this.onStopPressed});
 
   @override
   _ControlBarState createState() => _ControlBarState();
@@ -20,6 +21,7 @@ class _ControlBarState extends State<ControlBar> {
 
   void _startRecording() {
     Provider.of<TimeCounterProvider>(context, listen: false).reset();
+    Provider.of<LocationProvider>(context, listen: false).reset();
 
     setState(() {
       isRecording = true;

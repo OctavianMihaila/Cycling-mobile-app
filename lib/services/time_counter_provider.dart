@@ -34,7 +34,7 @@ class TimeCounterProvider with ChangeNotifier {
   }
 
   // Converting seconds to HH:MM:SS format
-  String getCurrentTime() {
+  String getCurrentTimeAsString() {
     int hours = _seconds ~/ 3600;
     int minutes = (_seconds % 3600) ~/ 60;
     int seconds = _seconds % 60;

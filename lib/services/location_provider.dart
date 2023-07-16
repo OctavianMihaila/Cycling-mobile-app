@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -12,12 +13,17 @@ enum CameraMode {
 class LocationProvider with ChangeNotifier {
   double _latitude = 0;
   double _longitude = 0;
+  double _startLatitude = 0;
+  double _startLongitude = 0;
+
   GoogleMapController? _controller;
   List<LatLng> _routePoints = [];
   final Set<Polyline> _polylines = {};
   Set<Polyline> get polylines => _polylines;
   CameraMode _cameraMode = CameraMode.Follow;
   StreamSubscription<Position>? _positionStreamSubscription;
+
+  DateTime? _lastSegmentStartTime = DateTime.now();
 
   double get latitude => _latitude;
   double get longitude => _longitude;
@@ -27,6 +33,87 @@ class LocationProvider with ChangeNotifier {
 
   set controller(GoogleMapController? controller) {
     _controller = controller;
+  }
+
+  set cameraMode(CameraMode cameraMode) {
+    _cameraMode = cameraMode;
+    notifyListeners();
+  }
+
+  String getCurrentDistanceAsString() {
+    double distanceInKm = getCurrentDistanceAsDouble();
+
+    return '${(distanceInKm / 1000).toStringAsFixed(2)} km';
+  }
+
+  double getCurrentDistanceAsDouble() {
+    double distanceInM = 0;
+    for (int i = 0; i < _routePoints.length - 1; i++) {
+      distanceInM += Geolocator.distanceBetween(
+        _routePoints[i].latitude,
+        _routePoints[i].longitude,
+        _routePoints[i + 1].latitude,
+        _routePoints[i + 1].longitude,
+      );
+    }
+    
+    return distanceInM;
+  }
+
+  double getDistanceInLastSegment() {
+    if (_routePoints.length < 2) {
+      return 0;
+    }
+
+    final int secondLastIndex = _routePoints.length - 2;
+    final double distanceInMeters = calculateDistance(
+      _routePoints[secondLastIndex].latitude,
+      _routePoints[secondLastIndex].longitude,
+      _routePoints[secondLastIndex + 1].latitude,
+      _routePoints[secondLastIndex + 1].longitude,
+    );
+
+    return distanceInMeters;
+  }
+
+  double getElapsedLastSegmentTime() {
+    if (_lastSegmentStartTime == null) {
+      return 0.0;
+    }
+    print('^^^^^^^^^^^^^^^^^^^Last segment start time: $_lastSegmentStartTime');
+
+    final Duration elapsedDuration = DateTime.now().difference(_lastSegmentStartTime!);
+
+    return elapsedDuration.inMilliseconds / 1000.0;
+  }
+
+  void setCameraMode(CameraMode mode) {
+    _cameraMode = mode;
+    notifyListeners();
+  }
+
+  void reset() {
+    _routePoints = [];
+    _polylines.clear();
+    notifyListeners();
+  }
+
+  // Calculate the distance between two points using the Haversine formula
+  double calculateDistance(double startLat, double startLng, double endLat, double endLng) {
+    const int earthRadius = 6371000; // in meters
+    double latDistance = degreesToRadians(endLat - startLat);
+    double lngDistance = degreesToRadians(endLng - startLng);
+    double a = math.sin(latDistance / 2) * math.sin(latDistance / 2) +
+        math.cos(degreesToRadians(startLat)) * math.cos(degreesToRadians(endLat)) *
+            math.sin(lngDistance / 2) * math.sin(lngDistance / 2);
+    double c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
+    double distance = earthRadius * c;
+
+    return distance;
+  }
+
+  double degreesToRadians(double degrees) {
+    return degrees * (math.pi / 180);
   }
 
   Future<bool> checkLocationPermission() async {
@@ -65,6 +152,12 @@ class LocationProvider with ChangeNotifier {
   void startListeningForLocationChanges() {
     _positionStreamSubscription = Geolocator.getPositionStream().listen(
           (Position position) {
+        // saving the initial position
+        if (_startLatitude == 0 && _startLongitude == 0) {
+          _startLatitude = position.latitude;
+          _startLongitude = position.longitude;
+        }
+
         final double newLatitude = position.latitude;
         final double newLongitude = position.longitude;
 
@@ -76,7 +169,7 @@ class LocationProvider with ChangeNotifier {
         );
 
         // Added this to prevent refreshing the UI when the user is not moving
-        if (distance >= 50) {
+        if (distance >= 0.5) {
           _latitude = newLatitude;
           _longitude = newLongitude;
 
@@ -85,6 +178,11 @@ class LocationProvider with ChangeNotifier {
 
           // Add the new location to the route points
           addRoutePoint(newLocation);
+
+          // Setting the start time of the segment
+          if (_lastSegmentStartTime != null) {
+            _lastSegmentStartTime = DateTime.now();
+          }
 
           notifyListeners();
 
@@ -98,13 +196,13 @@ class LocationProvider with ChangeNotifier {
                 CameraUpdate.newLatLng(newLocation),
               );
             }
+          } else {
+            _lastSegmentStartTime = null;
           }
         }
       },
     );
   }
-
-
 
   void stopListeningForLocationChanges() {
     _positionStreamSubscription?.cancel();
@@ -124,11 +222,6 @@ class LocationProvider with ChangeNotifier {
     // Add the Polyline to the polylines set
     _polylines.add(polyline);
 
-    notifyListeners();
-  }
-
-  void setCameraMode(CameraMode mode) {
-    _cameraMode = mode;
     notifyListeners();
   }
 }

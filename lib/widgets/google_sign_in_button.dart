@@ -2,7 +2,7 @@ import 'package:cycling_route_planner/widgets/splash_button.dart';
 import 'package:flutter/material.dart';
 
 class GoogleSignInButton extends SplashButton {
-  GoogleSignInButton({
+  const GoogleSignInButton({
     required VoidCallback onPressed,
   }) : super(
     text: 'Sign in with Google',
