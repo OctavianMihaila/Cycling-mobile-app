@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../widgets/control_bar.dart';
 import '../../widgets/ride_details_popup_box.dart';
+import '../../widgets/weather_details_popup_box.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -62,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
         top: height * 0.45,
         left: width * 0.1,
         right: width * 0.1,
-        child: RideDetailsPopUpBox(width: width, height: height),
+        child: WeatherDetailsPopUpBox(width: width, height: height),
       );
     });
 
@@ -76,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     _showPopUpWidget('close_record_button', (BuildContext context) {
       return Positioned(
-        top: height * 0.15,
+        top: height * 0.2,
         right: width * 0.04,
         child: SizedBox(
           width: buttonSize,
@@ -91,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
               }
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red[400],
+              backgroundColor: Colors.yellow[500],
               shape: const CircleBorder(),
               padding: const EdgeInsets.all(5.0),
             ),
@@ -109,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     _showPopUpWidget('close_weather_button', (BuildContext context) {
       return Positioned(
-        top: height * 0.235,
+        top: height * 0.285,
         right: width * 0.04,
         child: SizedBox(
           width: buttonSize,
@@ -124,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
               }
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red[400],
+              backgroundColor: Colors.yellow[500],
               shape: const CircleBorder(),
               padding: const EdgeInsets.all(5.0),
             ),
