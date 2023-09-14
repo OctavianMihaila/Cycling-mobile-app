@@ -2,7 +2,10 @@ import 'package:cycling_route_planner/widgets/google_maps.dart';
 import 'package:cycling_route_planner/widgets/popup_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
+import '../../services/location_provider.dart';
+import '../../services/weather_provider.dart';
 import '../../widgets/control_bar.dart';
 import '../../widgets/ride_details_popup_box.dart';
 import '../../widgets/weather_details_popup_box.dart';
@@ -54,9 +57,13 @@ class _HomeScreenState extends State<HomeScreen> {
     isDetailsVisible = true;
   }
 
-  void _showWeatherDetails(BuildContext context) {
+  Future<void> _showWeatherDetails(BuildContext context) async {
+    final double lat = Provider.of<LocationProvider>(context, listen: false).latitude;
+    final double lon = Provider.of<LocationProvider>(context, listen: false).longitude;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+
+    await Provider.of<WeatherProvider>(context, listen: false).fetchWeather(lat, lon);
 
     _showPopUpWidget('weather_details', (BuildContext context) {
       return Positioned(
@@ -167,7 +174,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 _showCloseRecordDetailsButton(context);
                 _showCloseWeatherDetailsButton(context);
                 _showRecordDetails(context);
-                _showWeatherDetails(context);
+                // _showWeatherDetails(context);
               },
               onStopPressed: () {
                 _hidePopUpWidget('record_details');

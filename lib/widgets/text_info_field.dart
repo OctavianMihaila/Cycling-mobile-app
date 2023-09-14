@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class InfoField extends StatelessWidget {
+class TextInfoField extends StatelessWidget {
   final String fieldName;
   final String fieldValue;
 
-  const InfoField({
+  const TextInfoField({
     required this.fieldName,
     required this.fieldValue,
   });

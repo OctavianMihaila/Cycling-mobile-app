@@ -1,8 +1,8 @@
 import 'package:cycling_route_planner/services/weather_provider.dart';
+import 'package:cycling_route_planner/widgets/icon_text_info_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../services/time_counter_provider.dart';
-import 'info_field.dart';
+import 'package:weather_icons/weather_icons.dart';
 
 class WeatherDetailsPopUpBox extends StatelessWidget {
   final double width;
@@ -15,8 +15,8 @@ class WeatherDetailsPopUpBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<TimeCounterProvider>(
-      builder: (context, timeCounterProvider, _) {
+    return Consumer<WeatherProvider>(
+      builder: (context, weatherProvider, _) {
         return Stack(
           children: [
             Center(
@@ -34,43 +34,20 @@ class WeatherDetailsPopUpBox extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: Column(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Expanded(
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: InfoField(
-                              fieldName: 'Temperature',
-                              fieldValue: context.watch<WeatherProvider>().getTemperature(),
-                            ),
-                          ),
-                          Expanded(
-                            child: InfoField(
-                              fieldName: 'Wind Speed',
-                              fieldValue: context.watch<WeatherProvider>().getWindSpeed(),
-                            ),
-                          ),
-                        ],
-                      ),
+                    IconTextInfoField(
+                        fieldValue: context.watch<WeatherProvider>().getTemperature(),
+                        iconData: WeatherIcons.thermometer
                     ),
-                    Expanded(
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: InfoField(
-                              fieldName: 'Rain Chance',
-                              fieldValue: 'todo', // TODO
-                            ),
-                          ),
-                          Expanded(
-                            child: InfoField(
-                              fieldName: 'UV Index',
-                              fieldValue: 'todo', // TODO
-                            ),
-                          ),
-                        ],
-                      ),
+                    IconTextInfoField(
+                        fieldValue: context.watch<WeatherProvider>().getWindSpeed(),
+                        iconData: context.watch<WeatherProvider>().getWindDirectionIcon()
+                    ),
+                    IconTextInfoField(
+                        fieldValue: context.watch<WeatherProvider>().getPop(),
+                        iconData: WeatherIcons.umbrella
                     ),
                   ],
                 ),
