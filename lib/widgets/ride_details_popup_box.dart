@@ -3,7 +3,7 @@ import 'package:cycling_route_planner/services/speed_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/time_counter_provider.dart';
-import 'info_field.dart';
+import 'text_info_field.dart';
 
 class RideDetailsPopUpBox extends StatelessWidget {
   final double width;
@@ -67,13 +67,13 @@ class RideDetailsPopUpBox extends StatelessWidget {
                       child: Row(
                         children: [
                           Expanded(
-                            child: InfoField(
+                            child: TextInfoField(
                               fieldName: 'Duration',
                               fieldValue: context.watch<TimeCounterProvider>().getCurrentTimeAsString(),
                             ),
                           ),
                           Expanded(
-                            child: InfoField(
+                            child: TextInfoField(
                               fieldName: 'Speed',
                               fieldValue: _getCurrentSpeed(context),
                             ),
@@ -85,13 +85,13 @@ class RideDetailsPopUpBox extends StatelessWidget {
                       child: Row(
                         children: [
                           Expanded(
-                            child: InfoField(
+                            child: TextInfoField(
                               fieldName: 'Distance',
                               fieldValue: context.watch<LocationProvider>().getCurrentDistanceAsString(),
                             ),
                           ),
                           Expanded(
-                            child: InfoField(
+                            child: TextInfoField(
                               fieldName: 'Avg Speed',
                               fieldValue: _getAverageSpeed(context),
                             ),

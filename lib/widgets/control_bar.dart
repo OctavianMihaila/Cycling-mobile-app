@@ -1,3 +1,4 @@
+import 'package:cycling_route_planner/services/weather_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -22,6 +23,11 @@ class _ControlBarState extends State<ControlBar> {
   void _startRecording() {
     Provider.of<TimeCounterProvider>(context, listen: false).reset();
     Provider.of<LocationProvider>(context, listen: false).reset();
+    Provider.of<WeatherProvider>(context, listen: false).reset();
+
+    final double lat = Provider.of<LocationProvider>(context, listen: false).latitude;
+    final double lon = Provider.of<LocationProvider>(context, listen: false).longitude;
+    Provider.of<WeatherProvider>(context, listen: false).fetchWeather(lat, lon);
 
     setState(() {
       isRecording = true;

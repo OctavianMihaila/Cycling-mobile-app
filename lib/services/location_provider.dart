@@ -19,7 +19,6 @@ class LocationProvider with ChangeNotifier {
   GoogleMapController? _controller;
   List<LatLng> _routePoints = [];
   final Set<Polyline> _polylines = {};
-  Set<Polyline> get polylines => _polylines;
   CameraMode _cameraMode = CameraMode.Follow;
   StreamSubscription<Position>? _positionStreamSubscription;
 
@@ -27,6 +26,7 @@ class LocationProvider with ChangeNotifier {
 
   double get latitude => _latitude;
   double get longitude => _longitude;
+  Set<Polyline> get polylines => _polylines;
   GoogleMapController? get controller => _controller;
   List<LatLng> get routePoints => _routePoints;
   CameraMode get cameraMode => _cameraMode;
