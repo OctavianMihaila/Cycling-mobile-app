@@ -16,4 +16,6 @@ Cycling Peloton is a comprehensive cycling route planner created using Flutter, 
 
 ## Package Structure
 
+  Using modular architecture to architect the app per feature to be easier and more readable and isolate the feature from each other
+
 ![Package Structure](https://github.com/OctavianMihaila/Cycling-mobile-app/assets/94364165/fb1434ed-a059-46b0-a219-12bdf773578a)
