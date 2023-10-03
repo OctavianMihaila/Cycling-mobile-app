@@ -1,6 +1,7 @@
 # Cycling Peloton
 
-![Screenshot](https://github.com/OctavianMihaila/Cycling-mobile-app/assets/94364165/f1f941aa-8e68-4ecc-8ea4-72cd17cf6d3a)
+![Screenshot](https://github.com/OctavianMihaila/Cycling-mobile-app/blob/main/assets/94364165/f1f941aa-8e68-4ecc-8ea4-72cd17cf6d3a.png)
+
 
 Cycling Peloton is a comprehensive cycling route planner created using Flutter, Firebase, Google Maps API, and OpenWeatherMap API. Whether you're a casual rider or a seasoned cyclist, we've got your cycling adventures covered. Join our virtual peloton and embark on unforgettable journeys through scenic routes, challenging terrains, and vibrant landscapes, all within the seamless interface of Flutter.
 
@@ -18,4 +19,5 @@ Cycling Peloton is a comprehensive cycling route planner created using Flutter, 
 
   Using modular architecture to architect the app per feature to be easier and more readable and isolate the feature from each other
 
-![Package Structure](https://github.com/OctavianMihaila/Cycling-mobile-app/assets/94364165/fb1434ed-a059-46b0-a219-12bdf773578a)
+![Package Structure](https://github.com/OctavianMihaila/Cycling-mobile-app/blob/main/assets/94364165/fb1434ed-a059-46b0-a219-12bdf773578a.png)
+
