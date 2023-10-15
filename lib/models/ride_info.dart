@@ -1,24 +1,29 @@
+import 'package:cycling_route_planner/services/time_counter_provider.dart';
 import 'package:flutter/material.dart';
 
-class RideInfo extends StatelessWidget {
-  final String title;
-  final Duration duration; // HH:mm:ss
+class RideInfo {
+  final String title = 'default title';
+  final String duration; // HH:mm:ss
   final double distance; // km
   final double averageSpeed; // km/h
   final double maxSpeed; // km/h
-  // TODO: Add more fields (elevation, calories, etc.)
+  final double calories; // kcal
+  final double elevGained; // m
+  final double elevLoss; // m
 
-  const RideInfo({super.key, required this.title, required this.duration, required this.distance, required this.averageSpeed, required this.maxSpeed});
+  const RideInfo({required this.duration,
+    required this.distance, required this.averageSpeed,
+    required this.maxSpeed, required this.calories,
+    required this.elevGained, required this.elevLoss});
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: // TODO
-    );
-  };
+  set title(String title) {
+    title = title;
+  }
+
+  String calculateAvgPace() {
+    int seconds = TimeCounterProvider().seconds;
+    int minutes = (seconds / 60).floor();
+    seconds = seconds % 60;
+    return '$minutes:$seconds';
+  }
+}

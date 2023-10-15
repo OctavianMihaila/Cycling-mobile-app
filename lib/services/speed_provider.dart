@@ -37,7 +37,7 @@ class SpeedProvider extends ChangeNotifier {
     return '${averageSpeed.toStringAsFixed(1)} km/h';
   }
 
-  void getAverageSpeed(double distance, int seconds) {
+  double getAverageSpeed(double distance, int seconds) {
     double hours = seconds / 3600;
     double distanceInKm = distance / 1000;
 
@@ -46,5 +46,11 @@ class SpeedProvider extends ChangeNotifier {
     } else {
       _averageSpeed = 0;
     }
+
+    return _averageSpeed;
+  }
+
+  double getMaxSpeed() {
+    return _maxSpeed;
   }
 }

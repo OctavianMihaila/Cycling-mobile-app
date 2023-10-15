@@ -1,4 +1,5 @@
 import 'package:cycling_route_planner/services/location_provider.dart';
+import 'package:cycling_route_planner/services/ride_details_calculator.dart';
 import 'package:cycling_route_planner/services/speed_provider.dart';
 import 'package:cycling_route_planner/services/time_counter_provider.dart';
 import 'package:cycling_route_planner/services/weather_provider.dart';
@@ -27,6 +28,9 @@ void main() async {
         ChangeNotifierProvider<WeatherProvider>(
           create: (_) => WeatherProvider(),
         ),
+        ChangeNotifierProvider<CaloriesBurnedProvider>(
+          create: (_) => CaloriesBurnedProvider(),
+        )
       ],
       child: const MyApp(),
     ),

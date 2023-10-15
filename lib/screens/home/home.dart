@@ -1,14 +1,20 @@
+import 'package:cycling_route_planner/services/ride_details_calculator.dart';
+import 'package:cycling_route_planner/services/speed_provider.dart';
 import 'package:cycling_route_planner/widgets/google_maps.dart';
 import 'package:cycling_route_planner/widgets/popup_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/ride_info.dart';
 import '../../services/location_provider.dart';
+import '../../services/time_counter_provider.dart';
 import '../../services/weather_provider.dart';
 import '../../widgets/control_bar.dart';
 import '../../widgets/ride_details_popup_box.dart';
 import '../../widgets/weather_details_popup_box.dart';
+import '../record_details/record_summary.dart';
+import '../../widgets/save_ride_dialog.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -17,7 +23,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   User? user = FirebaseAuth.instance.currentUser;
-  List<OverlayEntry> overlayEntries = [];
+  Set overlayEntries = {};
   // Used to store the overlay entries with their corresponding widget id.
   Map<String, OverlayEntry> popUpWidgets = {};
   bool isDetailsVisible = false;
@@ -26,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _showPopUpWidget(String widgetId, WidgetBuilder builder) {
     OverlayState? overlayState = Overlay.of(context);
     OverlayEntry overlayEntry = OverlayEntry(builder: builder);
-    overlayState.insert(overlayEntry);
+    overlayState?.insert(overlayEntry);
     overlayEntries.add(overlayEntry);
     // Store the overlay entry with its corresponding widget id.
     popUpWidgets[widgetId] = overlayEntry;
@@ -143,6 +149,56 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  RideInfo createRideInfo() {
+    const double weight = 70.00;
+    final String duration = Provider.of<TimeCounterProvider>(context, listen: false).getCurrentTimeAsString();
+    final int seconds = Provider.of<TimeCounterProvider>(context, listen: false).seconds;
+    final double distance = Provider.of<LocationProvider>(context, listen: false).getCurrentDistanceAsDouble();
+    final double averageSpeed = Provider.of<SpeedProvider>(context, listen: false).getAverageSpeed(distance, seconds);
+    final double maxSpeed = Provider.of<SpeedProvider>(context, listen: false).getMaxSpeed();
+    final double calories = Provider.of<CaloriesBurnedProvider>(context, listen: false).calculateCaloriesBurned(distance, weight, seconds);
+    final double elevGained = 150; // Replace with your actual elevation gained
+    final double elevLoss = 100; // Replace with your actual elevation loss
+
+    return RideInfo(
+      duration: duration,
+      distance: distance,
+      averageSpeed: averageSpeed,
+      maxSpeed: maxSpeed,
+      calories: calories,
+      elevGained: elevGained,
+      elevLoss: elevLoss,
+    );
+  }
+
+  void redirectToSummaryScreen(RideInfo rideInfo) {
+    // Here we check if the context is mounted, because we are calling
+    // setState() after a future has completed, and the context may no
+    // longer be mounted at that point.
+
+    if (!context.mounted) return;
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => RideRecordScreen(rideInfo: rideInfo)),
+    );
+  }
+
+
+  void _showSaveRideDialog(RideInfo rideInfo) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SaveRideDialog(
+          onSaveCallback: () {
+            redirectToSummaryScreen(rideInfo);
+          },
+        );
+      },
+    );
+  }
+
+
   @override
   void dispose() {
     for (var overlayEntry in overlayEntries) {
@@ -174,14 +230,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 _showCloseRecordDetailsButton(context);
                 _showCloseWeatherDetailsButton(context);
                 _showRecordDetails(context);
-                // _showWeatherDetails(context);
               },
               onStopPressed: () {
+                RideInfo rideInfo = createRideInfo();
+                _showSaveRideDialog(rideInfo);
                 _hidePopUpWidget('record_details');
                 _hidePopUpWidget('weather_details');
                 _hidePopUpWidget('close_record_button');
                 _hidePopUpWidget('close_weather_button');
-                // TODO: Redirect to ride details screen.
               },
             ),
           ],
