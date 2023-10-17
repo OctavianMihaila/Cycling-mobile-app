@@ -8,13 +8,13 @@ class RideInfo {
   final double averageSpeed; // km/h
   final double maxSpeed; // km/h
   final double calories; // kcal
-  final double elevGained; // m
-  final double elevLoss; // m
+  final double elevationGained; // m
+  final double elevationLoss; // m
 
   const RideInfo({required this.duration,
     required this.distance, required this.averageSpeed,
     required this.maxSpeed, required this.calories,
-    required this.elevGained, required this.elevLoss});
+    required this.elevationGained, required this.elevationLoss});
 
   set title(String title) {
     title = title;

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cycling_route_planner/services/firestore_service.dart';
 import 'package:cycling_route_planner/services/ride_details_calculator.dart';
 import 'package:cycling_route_planner/services/speed_provider.dart';
 import 'package:cycling_route_planner/widgets/google_maps.dart';
@@ -151,12 +153,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
   RideInfo createRideInfo() {
     const double weight = 70.00;
-    final String duration = Provider.of<TimeCounterProvider>(context, listen: false).getCurrentTimeAsString();
-    final int seconds = Provider.of<TimeCounterProvider>(context, listen: false).seconds;
-    final double distance = Provider.of<LocationProvider>(context, listen: false).getCurrentDistanceAsDouble();
-    final double averageSpeed = Provider.of<SpeedProvider>(context, listen: false).getAverageSpeed(distance, seconds);
-    final double maxSpeed = Provider.of<SpeedProvider>(context, listen: false).getMaxSpeed();
-    final double calories = Provider.of<CaloriesBurnedProvider>(context, listen: false).calculateCaloriesBurned(distance, weight, seconds);
+    final String duration = Provider.of<TimeCounterProvider>(context, listen: false)
+        .getCurrentTimeAsString();
+    final int seconds = Provider.of<TimeCounterProvider>(context, listen: false)
+        .seconds;
+    final double distance = Provider.of<LocationProvider>(context, listen: false)
+        .getCurrentDistanceAsDouble();
+    final double averageSpeed = Provider.of<SpeedProvider>(context, listen: false)
+        .getAverageSpeed(distance, seconds);
+    final double maxSpeed = Provider.of<SpeedProvider>(context, listen: false)
+        .getMaxSpeed();
+    final double calories = Provider.of<CaloriesBurnedProvider>(context, listen: false)
+        .calculateCaloriesBurned(distance, weight, seconds);
     final double elevGained = 150; // Replace with your actual elevation gained
     final double elevLoss = 100; // Replace with your actual elevation loss
 
@@ -166,8 +174,8 @@ class _HomeScreenState extends State<HomeScreen> {
       averageSpeed: averageSpeed,
       maxSpeed: maxSpeed,
       calories: calories,
-      elevGained: elevGained,
-      elevLoss: elevLoss,
+      elevationGained: elevGained,
+      elevationLoss: elevLoss,
     );
   }
 
@@ -190,7 +198,21 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       builder: (BuildContext context) {
         return SaveRideDialog(
-          onSaveCallback: () {
+          onSaveCallback: () async {
+            Map<String, dynamic> data = {
+              'userId': user!.uid,
+              'duration': rideInfo.duration,
+              'distance': rideInfo.distance.toStringAsFixed(2),
+              'avgSpeed': rideInfo.averageSpeed.toStringAsFixed(2),
+              'avgPace': rideInfo.calculateAvgPace(),
+              'maxSpeed': rideInfo.maxSpeed.toStringAsFixed(2),
+              'calories': rideInfo.calories.toStringAsFixed(2),
+              'elevationGained': rideInfo.elevationGained.toStringAsFixed(2),
+              'elevationLoss': rideInfo.elevationLoss.toStringAsFixed(2),
+            };
+            FirestoreService firestoreService = FirestoreService();
+            firestoreService.addActivity(data);
+
             redirectToSummaryScreen(rideInfo);
           },
         );

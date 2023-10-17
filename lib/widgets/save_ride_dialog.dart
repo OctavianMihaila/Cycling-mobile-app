@@ -51,11 +51,9 @@ class _SaveRideDialogState extends State<SaveRideDialog> {
         TextButton(
           onPressed: () {
             if (_saveRide) {
-              String rideName = _rideNameController.text;
+              String activityName = _rideNameController.text;
               widget.onSaveCallback();
-              print('Saving ride with name: $rideName');
             }
-            // Navigator.of(context).pop();
           },
           child: const Text('Save'),
         ),

@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestoreService {
-  FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  CollectionReference _activitiesCollection = FirebaseFirestore.instance.collection('record_details');
+  final CollectionReference _activitiesCollection = FirebaseFirestore.instance
+      .collection('record_details');
 
   static final FirestoreService _instance = FirestoreService._internal();
 
@@ -10,8 +10,7 @@ class FirestoreService {
 
   FirestoreService._internal();
 
-  Future<void> addActivity(String userId, Map<String, dynamic> data) async {
-    data['userId'] = userId;
+  Future<void> addActivity(Map<String, dynamic> data) async {
     await _activitiesCollection.add(data);
   }
 
