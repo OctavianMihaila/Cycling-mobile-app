@@ -1,3 +1,4 @@
+import 'package:cycling_route_planner/services/elevation_provider.dart';
 import 'package:cycling_route_planner/services/location_provider.dart';
 import 'package:cycling_route_planner/services/ride_details_calculator.dart';
 import 'package:cycling_route_planner/services/speed_provider.dart';
@@ -30,6 +31,9 @@ void main() async {
         ),
         ChangeNotifierProvider<CaloriesBurnedProvider>(
           create: (_) => CaloriesBurnedProvider(),
+        ),
+        ChangeNotifierProvider<ElevationProvider>(
+          create: (_) => ElevationProvider(),
         )
       ],
       child: const MyApp(),

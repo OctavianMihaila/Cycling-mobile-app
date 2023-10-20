@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cycling_route_planner/services/elevation_provider.dart';
 import 'package:cycling_route_planner/services/firestore_service.dart';
 import 'package:cycling_route_planner/services/ride_details_calculator.dart';
 import 'package:cycling_route_planner/services/speed_provider.dart';
@@ -153,20 +153,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
   RideInfo createRideInfo() {
     const double weight = 70.00;
+
     final String duration = Provider.of<TimeCounterProvider>(context, listen: false)
         .getCurrentTimeAsString();
     final int seconds = Provider.of<TimeCounterProvider>(context, listen: false)
         .seconds;
     final double distance = Provider.of<LocationProvider>(context, listen: false)
-        .getCurrentDistanceAsDouble();
+        .getCurrentDistanceAsDouble() / 1000;
+    final double elevGained = Provider.of<LocationProvider>(context, listen: false).getElevationGain();
+    final double elevLoss = Provider.of<LocationProvider>(context, listen: false).getElevationLoss();
     final double averageSpeed = Provider.of<SpeedProvider>(context, listen: false)
         .getAverageSpeed(distance, seconds);
     final double maxSpeed = Provider.of<SpeedProvider>(context, listen: false)
         .getMaxSpeed();
     final double calories = Provider.of<CaloriesBurnedProvider>(context, listen: false)
         .calculateCaloriesBurned(distance, weight, seconds);
-    final double elevGained = 150; // Replace with your actual elevation gained
-    final double elevLoss = 100; // Replace with your actual elevation loss
 
     return RideInfo(
       duration: duration,
@@ -183,7 +184,6 @@ class _HomeScreenState extends State<HomeScreen> {
     // Here we check if the context is mounted, because we are calling
     // setState() after a future has completed, and the context may no
     // longer be mounted at that point.
-
     if (!context.mounted) return;
 
     Navigator.pushReplacement(
